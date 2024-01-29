@@ -29,7 +29,10 @@ productState:
   alias: StateManagementCSV
   refreshInterval: None
   retentionVersions: ""
-  logicalSchema: ""
+  logicalSchema: 
+      properties:
+        City: STRING
+        Region: STRING
   enforceSchemaMethod: ""
   isProfilingEnabled: false
 transformation:

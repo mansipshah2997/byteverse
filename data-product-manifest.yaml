@@ -1,44 +1,42 @@
-version: 0.0.6
-jobId: "284"
-jobName: ReadCSVPySpark_Vishnu copy copy copy
-jobType: DataSets
-alias: StateManagementCSV12345
+version: 0.0.3
+jobId: "295"
+jobName: pyspark_extra_params_Mansi
+jobType: Source Aligned Data Product
+alias: write_to_csv
 discoveryPort:
-  name: ReadCSVPySpark_Vishnu copy copy copy
+  name: pyspark_extra_params_Mansi
 inputPorts:
-  - alias: Delimited_1
+  - alias: weather_day_1
     isDynamic: true
-    path: s3://byte-etl-externaldemo/weather_data/20230626103841.csv
+    path: s3://byte-etl-externaldemo/weather_data/20230626130122.csv
     optional:
       persistDataFrame: false
-      jsonSchema: '{"sd":"1"}'
+      advanceOptions:
+        delimiter: ","
       enableDataReconciliation: false
       enforceSchema: false
-      dataSetUrn: ""
+      connection: S3 with User
+      dataSetUrn: urn:dv:dataset:3a0494b4-86e9-430f-afcb-877a0d9bea95
     type: inputDelimited
-    dataProductUrn: ""
 productState:
   persistDataFrame: false
   enableDataReconciliation: false
   enforceSchema: false
-  stepName: StateManagementCSV12345
+  stepName: write to csv
   path: s3://byte-etl-externaldemo/custom_pyspark_output/weather_data_daily_test.csv
   type: inputDelimited
   isStateManagement: true
   sequence: 3
-  alias: StateManagementCSV
+  alias: write_to_csv
   refreshInterval: None
   retentionVersions: ""
-  logicalSchema: 
-      properties:
-        City: STRING
-        Region: STRING
+  logicalSchema: ""
   enforceSchemaMethod: ""
   isProfilingEnabled: false
 transformation:
   - alias: EMR_PySpark_1
     arguments:
-      - s3://byte-etl-externaldemo/weather_data/20230626103841.csv
+      - s3://byte-etl-externaldemo/weather_data/20230626130122.csv
     pythonFilePath: s3://bp-spark-sql-library-test-acc/custom-jobs/CustomPythonJobWriteParquetTimeOut.py
     optional:
       pythonEnvTarGZPath: s3://byte-etl-externaldemo/pyspark_serverless_test/pyspark_venv.tar.gz
@@ -48,7 +46,7 @@ transformation:
     type: customPySparkEMRServerless
     sequence: 2
     references:
-      - alias: Delimited_1
+      - alias: weather_day_1
         sqlReference: ""
 controlPort:
   dataQualityRules: {}

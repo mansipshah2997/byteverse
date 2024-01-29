@@ -2,7 +2,7 @@ version: 0.0.5
 jobId: "284"
 jobName: ReadCSVPySpark_Vishnu copy copy copy
 jobType: DataSets
-alias: StateManagementCSV
+alias: StateManagementCSV12345
 discoveryPort:
   name: ReadCSVPySpark_Vishnu copy copy copy
 inputPorts:
@@ -21,7 +21,7 @@ productState:
   persistDataFrame: false
   enableDataReconciliation: false
   enforceSchema: false
-  stepName: StateManagementCSV
+  stepName: StateManagementCSV12345
   path: s3://byte-etl-externaldemo/custom_pyspark_output/weather_data_daily_test.csv
   type: inputDelimited
   isStateManagement: true

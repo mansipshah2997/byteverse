@@ -1,4 +1,4 @@
-version: 0.0.3
+version: 0.0.5
 jobId: "295"
 jobName: pyspark_extra_params_Mansi
 jobType: Source Aligned Data Product
@@ -30,10 +30,7 @@ productState:
   alias: write_to_csv
   refreshInterval: None
   retentionVersions: ""
-  logicalSchema:
-    properties:
-        City: STRING
-        Region: STRING
+  logicalSchema: ""
   enforceSchemaMethod: ""
   isProfilingEnabled: false
 transformation:
@@ -49,13 +46,11 @@ transformation:
     type: customPySparkEMRServerless
     sequence: 2
     references:
-      - alias: weather_day_1
+      - alias: ""
         sqlReference: ""
 controlPort:
   dataQualityRules: {}
 outputPort:
   subscriptionChannels:
     - channelType: Postgres
-      queryType: SQL
-    - channelType: Dataproduct
       queryType: SQL

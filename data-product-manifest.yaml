@@ -1,10 +1,10 @@
-version: 0.0.5
-jobId: "295"
-jobName: pyspark_extra_params_Mansi
+version: 0.0.2
+jobId: "361"
+jobName: Test_manifest_pyspark_Mansi
 jobType: Source Aligned Data Product
 alias: write_to_csv
 discoveryPort:
-  name: pyspark_extra_params_Mansi
+  name: Test_manifest_pyspark_Mansi
 inputPorts:
   - alias: weather_day_1
     isDynamic: true
@@ -22,7 +22,7 @@ productState:
   persistDataFrame: false
   enableDataReconciliation: false
   enforceSchema: false
-  stepName: write to csv
+  stepName: write_to_csv
   path: s3://byte-etl-externaldemo/custom_pyspark_output/weather_data_daily_test.csv
   type: inputDelimited
   isStateManagement: true
@@ -40,9 +40,6 @@ transformation:
     pythonFilePath: s3://bp-spark-sql-library-test-acc/custom-jobs/CustomPythonJobWriteParquetTimeOut.py
     optional:
       pythonEnvTarGZPath: s3://byte-etl-externaldemo/pyspark_serverless_test/pyspark_venv.tar.gz
-      sparkExtraConf:
-        spark.sql.legacy.timeParserPolicy: LEGACY
-        spark.sql.parquet.datetimeRebaseModeInRead: LEGACY
     type: customPySparkEMRServerless
     sequence: 2
     references:

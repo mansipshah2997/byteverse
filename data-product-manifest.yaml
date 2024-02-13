@@ -2,7 +2,7 @@ version: 0.0.6
 jobId: "295"
 jobName: pyspark_extra_params_Mansi
 jobType: Source Aligned Data Product
-alias: write_to_csv
+alias: write_to_csv1
 discoveryPort:
   name: pyspark_extra_params_Mansi
 inputPorts:
@@ -27,10 +27,13 @@ productState:
   type: inputDelimited
   isStateManagement: true
   sequence: 3
-  alias: write_to_csv
+  alias: write_to_csv2
   refreshInterval: None
   retentionVersions: ""
-  logicalSchema: ""
+  logicalSchema:
+    properties:
+      City: STRING
+      Region: STRING
   enforceSchemaMethod: ""
   isProfilingEnabled: false
 transformation:

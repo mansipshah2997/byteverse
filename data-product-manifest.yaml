@@ -1,10 +1,10 @@
-version: 0.0.3
-jobId: "361"
-jobName: Test_manifest_pyspark_Mansi
+version: 0.0.6
+jobId: "295"
+jobName: pyspark_extra_params_Mansi
 jobType: Source Aligned Data Product
-alias: write_csv
+alias: write_to_csv
 discoveryPort:
-  name: Test_manifest_pyspark_Mansi
+  name: pyspark_extra_params_Mansi
 inputPorts:
   - alias: weather_day_1
     isDynamic: true
@@ -19,33 +19,34 @@ inputPorts:
       dataSetUrn: urn:dv:dataset:3a0494b4-86e9-430f-afcb-877a0d9bea95
     type: inputDelimited
 productState:
-  isDynamic: true
-  alias: write_csv
-  retentionVersions: ""
-  logicalSchema:
-    properties:
-      City: STRING
-      Region: STRING
-  stateStoreType: writeDataFrameToCsv
-  isProfilingEnabled: false
-  partitionFiles: 1
+  persistDataFrame: false
+  enableDataReconciliation: false
+  enforceSchema: false
+  stepName: write to csv
   path: s3://byte-etl-externaldemo/custom_pyspark_output/weather_data_daily_test.csv
-  optional:
-    persistDataFrame: false
-    advanceOptions:
-      header: true
-    addRunIdColumn: false
-    enableDataReconciliation: false
-    enforceSchema: false
+  type: inputDelimited
+  isStateManagement: true
+  sequence: 3
+  alias: write_to_csv
   refreshInterval: None
+  retentionVersions: ""
+  logicalSchema: ""
+  enforceSchemaMethod: ""
+  isProfilingEnabled: false
 transformation:
-  - alias: Spark_SQL_1
-    type: SQL
-    description: sql
-    query: select city from data
-    sequenceNo: 2
+  - alias: EMR_PySpark_1
+    arguments:
+      - s3://byte-etl-externaldemo/weather_data/20230626130122.csv
+    pythonFilePath: s3://bp-spark-sql-library-test-acc/custom-jobs/CustomPythonJobWriteParquetTimeOut.py
+    optional:
+      pythonEnvTarGZPath: s3://byte-etl-externaldemo/pyspark_serverless_test/pyspark_venv.tar.gz
+      sparkExtraConf:
+        spark.sql.legacy.timeParserPolicy: LEGACY
+        spark.sql.parquet.datetimeRebaseModeInRead: LEGACY
+    type: customPySparkEMRServerless
+    sequence: 2
     references:
-      - alias: weather_day_1
+      - alias: ""
         sqlReference: ""
 controlPort:
   dataQualityRules: {}

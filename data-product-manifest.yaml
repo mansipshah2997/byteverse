@@ -1,0 +1,48 @@
+version: 0.0.1
+jobId: "355"
+jobName: Test_iceberg_jdbc_load_Mansi
+jobType: Source Aligned Data Product
+domain: finance
+alias: Write_iceberg
+discoveryPort:
+  name: Test_iceberg_jdbc_load_Mansi
+inputPorts:
+  - alias: read_csv_for_iceberg_jdbc_1
+    isDynamic: true
+    path: /data/tmp/input_data/incr_1.csv
+    optional:
+      persistDataFrame: false
+      advanceOptions:
+        delimiter: ","
+      enableDataReconciliation: false
+      enforceSchema: false
+      connection: Base S3 Connectivity
+      dataSetUrn: urn:dv:dataset:06e2803b-c803-4bd8-8f01-226203ad77a3
+    type: inputDelimited
+productState:
+  isDynamic: true
+  alias: Write_iceberg
+  retentionVersions: ""
+  logicalSchema: ""
+  stateStoreType: loadDataIceberg
+  isProfilingEnabled: false
+  updateStrategy: Overwrite
+  tableName: iceberg_db.data_1
+  warehousePath: /data/tmp/iceberg_warehouse/
+  catalogName: my_catalog
+  optional:
+    persistDataFrame: false
+    enableDataReconciliation: false
+    enforceSchema: true
+    enforceSchemaMethod: Warning
+    catalogType: postgres
+  refreshInterval: None
+transformation: []
+controlPort:
+  dataQualityRules: {}
+outputPort:
+  subscriptionChannels:
+    - channelType: Postgres
+      queryType: SQL
+    - channelType: Dataproduct
+      queryType: SQL

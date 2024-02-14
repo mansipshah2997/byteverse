@@ -1,59 +1,48 @@
-version: 0.0.6
-jobId: "295"
-jobName: pyspark_extra_params_Mansi1
+version: 0.0.2
+jobId: "355"
+jobName: Test_iceberg_jdbc_load_Mansi
 jobType: Source Aligned Data Product
-alias: write_to_csv1
+domain: finance
+alias: Write_iceberg
 discoveryPort:
-  name: pyspark_extra_params_Mansi1
+  name: Test_iceberg_jdbc_load_Mansi
 inputPorts:
-  - alias: weather_day_1
+  - alias: read_csv_for_iceberg_jdbc_1
     isDynamic: true
-    path: s3://byte-etl-externaldemo/weather_data/20230626130122.csv
+    path: /data/tmp/input_data/incr_1.csv
     optional:
       persistDataFrame: false
       advanceOptions:
         delimiter: ","
       enableDataReconciliation: false
       enforceSchema: false
-      connection: S3 with User
-      dataSetUrn: urn:dv:dataset:3a0494b4-86e9-430f-afcb-877a0d9bea95
+      connection: Base S3 Connectivity
+      dataSetUrn: urn:dv:dataset:06e2803b-c803-4bd8-8f01-226203ad77a3
     type: inputDelimited
 productState:
-  persistDataFrame: false
-  enableDataReconciliation: false
-  enforceSchema: false
-  stepName: write to csv
-  path: s3://byte-etl-externaldemo/custom_pyspark_output/weather_data_daily_test.csv
-  type: inputDelimited
-  isStateManagement: true
-  sequence: 3
-  alias: write_to_csv2
-  refreshInterval: None
+  isDynamic: true
+  alias: Write_iceberg
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      City: STRING
-      Region: STRING
-  enforceSchemaMethod: ""
+  logicalSchema: ""
+  stateStoreType: loadDataIceberg
   isProfilingEnabled: false
-transformation:
-  - alias: EMR_PySpark_1
-    arguments:
-      - s3://byte-etl-externaldemo/weather_data/20230626130122.csv
-    pythonFilePath: s3://bp-spark-sql-library-test-acc/custom-jobs/CustomPythonJobWriteParquetTimeOut.py
-    optional:
-      pythonEnvTarGZPath: s3://byte-etl-externaldemo/pyspark_serverless_test/pyspark_venv.tar.gz
-      sparkExtraConf:
-        spark.sql.legacy.timeParserPolicy: LEGACY
-        spark.sql.parquet.datetimeRebaseModeInRead: LEGACY
-    type: customPySparkEMRServerless
-    sequence: 2
-    references:
-      - alias: ""
-        sqlReference: ""
+  updateStrategy: Overwrite
+  tableName: iceberg_db.data_1
+  warehousePath: /data/tmp/iceberg_warehouse/
+  catalogName: my_catalog
+  optional:
+    persistDataFrame: false
+    enableDataReconciliation: false
+    enforceSchema: true
+    enforceSchemaMethod: Warning
+    catalogType: postgres
+  refreshInterval: None
+transformation: []
 controlPort:
   dataQualityRules: {}
 outputPort:
   subscriptionChannels:
     - channelType: Postgres
+      queryType: SQL
+    - channelType: Dataproduct
       queryType: SQL

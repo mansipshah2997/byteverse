@@ -1,4 +1,4 @@
-version: 0.0.2
+version: 0.0.3
 jobId: "376"
 jobName: pyspark_extra_params_Mansi_again
 jobType: Source Aligned Data Product
@@ -31,10 +31,7 @@ productState:
   alias: write_del
   refreshInterval: None
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      City: STRING
-      Region: STRING
+  logicalSchema: ""
   enforceSchemaMethod: ""
   isProfilingEnabled: false
 transformation:

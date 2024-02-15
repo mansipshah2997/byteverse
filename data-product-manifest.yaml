@@ -5,7 +5,7 @@ jobType: Source Aligned Data Product
 domain: finance
 alias: Write_iceberg2
 discoveryPort:
-  name: Test_load_iceberg_jdbc_SCD2_Mansi
+  name: Test_load_iceberg_jdbc_SCD2_Mansi_2
 inputPorts:
   - alias: read_csv_onprim_with_s3_conn_vishnu_2
     isDynamic: true

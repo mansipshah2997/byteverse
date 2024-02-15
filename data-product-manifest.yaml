@@ -3,7 +3,7 @@ jobId: "381"
 jobName: Test_load_iceberg_jdbc_SCD1_Mansi
 jobType: Source Aligned Data Product
 domain: finance
-alias: write_in_iceberg
+alias: write_in_iceberg1
 discoveryPort:
   name: Test_load_iceberg_jdbc_SCD1_Mansi
 inputPorts:
@@ -23,7 +23,10 @@ productState:
   isDynamic: true
   alias: write_in_iceberg
   retentionVersions: ""
-  logicalSchema: ""
+  logicalSchema:
+    properties:
+      City: STRING
+      Region: STRING
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: SCD1

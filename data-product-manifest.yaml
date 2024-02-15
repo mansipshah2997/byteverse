@@ -1,12 +1,13 @@
-version: 0.0.1
+version: 0.0.2
 jobId: "376"
 jobName: pyspark_extra_params_Mansi_again
 jobType: Source Aligned Data Product
+domain: sale
 alias: write_del
 discoveryPort:
   name: pyspark_extra_params_Mansi_again
 inputPorts:
-  - alias: weather_day_1
+  - alias: weather_data_Mansi_1
     isDynamic: true
     path: s3://byte-etl-externaldemo/weather_data/20230626130122.csv
     optional:
@@ -15,8 +16,8 @@ inputPorts:
         delimiter: ","
       enableDataReconciliation: false
       enforceSchema: false
-      connection: S3 with User
-      dataSetUrn: urn:dv:dataset:3a0494b4-86e9-430f-afcb-877a0d9bea95
+      connection: Mansi_S3
+      dataSetUrn: urn:dv:dataset:7ea0f9b9-1b2b-4d8c-a3b6-2a68936e1ad9
     type: inputDelimited
 productState:
   persistDataFrame: false
@@ -30,10 +31,7 @@ productState:
   alias: write_del
   refreshInterval: None
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      City: STRING
-      Region: STRING
+  logicalSchema: ""
   enforceSchemaMethod: ""
   isProfilingEnabled: false
 transformation:

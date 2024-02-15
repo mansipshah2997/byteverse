@@ -1,44 +1,40 @@
 version: 0.0.1
-jobId: "355"
-jobName: Test_iceberg_jdbc_load_Mansi
+jobId: "375"
+jobName: Test_read_csv_write_iceberg_AWS_Mansi
 jobType: Source Aligned Data Product
-domain: finance
-alias: Write_iceberg
+alias: ice
 discoveryPort:
-  name: Test_iceberg_jdbc_load_Mansi
+  name: Test_read_csv_write_iceberg_AWS_Mansi
 inputPorts:
-  - alias: read_csv_for_iceberg_jdbc_1
+  - alias: Parquet_Mansi_s3_1
     isDynamic: true
-    path: /data/tmp/input_data/incr_1.csv
+    path: s3://byte-etl-externaldemo/weather_data/
     optional:
       persistDataFrame: false
       advanceOptions:
         delimiter: ","
       enableDataReconciliation: false
       enforceSchema: false
-      connection: Base S3 Connectivity
-      dataSetUrn: urn:dv:dataset:06e2803b-c803-4bd8-8f01-226203ad77a3
+      connection: Mansi_S3
+      dataSetUrn: urn:dv:dataset:b3deed73-c9c2-49ca-8323-ce16426fe4ba
     type: inputDelimited
 productState:
   isDynamic: true
-  alias: Write_iceberg
+  alias: ice
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      City: STRING
-      Region: STRING
+  logicalSchema: ""
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: Overwrite
-  tableName: iceberg_db.data_1
-  warehousePath: /data/tmp/iceberg_warehouse/
-  catalogName: my_catalog
+  tableName: s3source.demotable
+  warehousePath: s3://bp-spark-sql-library-test-acc/
+  catalogName: glue
   optional:
     persistDataFrame: false
     enableDataReconciliation: false
     enforceSchema: true
     enforceSchemaMethod: Warning
-    catalogType: postgres
+    catalogType: glue
   refreshInterval: None
 transformation: []
 controlPort:

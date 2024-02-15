@@ -23,17 +23,13 @@ productState:
   isDynamic: true
   alias: Write_iceberg
   retentionVersions: ""
-  logicalSchema: ""
+  logicalSchema:
+    properties:
+      City: STRING
+      Region: STRING
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: SCD2
-  updateStrategyOptions:
-    entityRef: ""
-    uniqueKeyColumns:
-      - - id
-    changeTrackColumns:
-      - - value
-    timeTrackColumn: modified2
   tableName: iceberg_db2.scd2_data2
   warehousePath: /data/tmp/iceberg_warehouse/
   catalogName: my_catalog

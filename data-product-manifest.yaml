@@ -7,7 +7,7 @@ alias: Write_iceberg1
 discoveryPort:
   name: Test_load_iceberg_jdbc_SCD2_Mansi
 inputPorts:
-  - alias: read_csv_onprim_with_s3_conn_vishnu_1
+  - alias: read_csv_onprim_with_s3_conn_vishnu_2
     isDynamic: true
     path: /data/tmp/input_data/incr_1.csv
     optional:
@@ -21,7 +21,7 @@ inputPorts:
     type: inputDelimited
 productState:
   isDynamic: true
-  alias: Write_iceberg
+  alias: Write_iceberg1
   retentionVersions: ""
   logicalSchema:
     properties:

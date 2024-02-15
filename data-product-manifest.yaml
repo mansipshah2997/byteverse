@@ -21,9 +21,12 @@ inputPorts:
     type: inputDelimited
 productState:
   isDynamic: true
-  alias: Write_iceberg
+  alias: Write_iceberg1
   retentionVersions: ""
-  logicalSchema: ""
+  logicalSchema:
+    properties:
+      City: STRING
+      Region: STRING
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: SCD2

@@ -1,4 +1,4 @@
-version: 0.0.5
+version: 0.0.6
 jobId: "355"
 jobName: Test_iceberg_jdbc_load_Mansi
 jobType: Source Aligned Data Product
@@ -23,10 +23,7 @@ productState:
   isDynamic: true
   alias: Write_iceberg
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      City: STRING
-      Region: STRING
+  logicalSchema: ""
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: Overwrite
@@ -47,7 +44,7 @@ transformation:
     sequence: 2
     inputDataFrameList:
       - inputDataFrame: read_csv_onprim_with_s3_conn_vishnu_1
-        tempViewName: ""
+        tempViewName: temp
     query: select * from temp
     optional:
       persistDataFrame: false

@@ -3,7 +3,7 @@ jobId: "379"
 jobName: Test_iceberg_jdbc_load_SCD2_Mansi
 jobType: Source Aligned Data Product
 domain: finance
-alias: write_in_iceberg
+alias: write_in_iceberg1
 discoveryPort:
   name: Test_iceberg_jdbc_load_SCD2_Mansi
 inputPorts:

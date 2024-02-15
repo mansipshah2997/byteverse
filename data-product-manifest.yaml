@@ -23,7 +23,10 @@ productState:
   isDynamic: true
   alias: write_in_iceberg
   retentionVersions: ""
-  logicalSchema: ""
+  logicalSchema:
+    properties:
+      City: STRING
+      Region: STRING
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: SCD2

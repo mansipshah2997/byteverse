@@ -1,4 +1,4 @@
-version: 0.0.4
+version: 0.0.5
 jobId: "355"
 jobName: Test_iceberg_jdbc_load_Mansi
 jobType: Source Aligned Data Product
@@ -7,26 +7,23 @@ alias: Write_iceberg
 discoveryPort:
   name: Test_iceberg_jdbc_load_Mansi
 inputPorts:
-  - alias: weather_data_Mansi_1
+  - alias: read_csv_onprim_with_s3_conn_vishnu_1
     isDynamic: true
-    path: s3://byte-etl-externaldemo/weather_data/20230626130122.csv
+    path: /data/tmp/input_data/incr_1.csv
     optional:
       persistDataFrame: false
       advanceOptions:
         delimiter: ","
       enableDataReconciliation: false
       enforceSchema: false
-      connection: Mansi_S3
-      dataSetUrn: urn:dv:dataset:7ea0f9b9-1b2b-4d8c-a3b6-2a68936e1ad9
+      connection: on_prim_testing_conn_s3_vishnu
+      dataSetUrn: urn:dv:dataset:fe039567-7e6b-4921-a55e-166965027888
     type: inputDelimited
 productState:
   isDynamic: true
   alias: Write_iceberg
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      City: STRING
-      Region: STRING
+  logicalSchema: ""
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: Overwrite
@@ -46,8 +43,8 @@ transformation:
     description: ssre
     sequence: 2
     inputDataFrameList:
-      - inputDataFrame: weather_data_Mansi_1
-        tempViewName: temp
+      - inputDataFrame: read_csv_onprim_with_s3_conn_vishnu_1
+        tempViewName: ""
     query: select * from temp
     optional:
       persistDataFrame: false

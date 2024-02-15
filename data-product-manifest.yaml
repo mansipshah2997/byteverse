@@ -30,7 +30,10 @@ productState:
   alias: write_del
   refreshInterval: None
   retentionVersions: ""
-  logicalSchema: ""
+  logicalSchema:
+    properties:
+      City: STRING
+      Region: STRING
   enforceSchemaMethod: ""
   isProfilingEnabled: false
 transformation:

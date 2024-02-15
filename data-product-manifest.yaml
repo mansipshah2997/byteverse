@@ -30,13 +30,6 @@ productState:
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: SCD2
-  updateStrategyOptions:
-    entityRef: ""
-    uniqueKeyColumns:
-      - - id
-    changeTrackColumns:
-      - - value
-    timeTrackColumn: modified2
   tableName: iceberg_db.scd2_data
   warehousePath: /data/tmp/iceberg_warehouse/
   catalogName: my_catalog

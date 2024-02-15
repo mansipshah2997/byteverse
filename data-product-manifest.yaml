@@ -1,4 +1,4 @@
-version: 0.0.2
+version: 0.0.3
 jobId: "379"
 jobName: Test_iceberg_jdbc_load_SCD2_Mansi
 jobType: Source Aligned Data Product
@@ -34,7 +34,7 @@ productState:
     changeTrackColumns:
       - - value
     timeTrackColumn: modified2
-  tableName: iceberg_meta.scd1_data
+  tableName: iceberg_meta.scd2_data
   warehousePath: /data/tmp/iceberg_warehouse/
   catalogName: my_catalog
   optional:

@@ -3,7 +3,7 @@ jobId: "380"
 jobName: Test_load_iceberg_jdbc_SCD2_Mansi_2
 jobType: Source Aligned Data Product
 domain: finance
-alias: Write_iceberg1
+alias: Write_iceberg2
 discoveryPort:
   name: Test_load_iceberg_jdbc_SCD2_Mansi
 inputPorts:
@@ -21,7 +21,7 @@ inputPorts:
     type: inputDelimited
 productState:
   isDynamic: true
-  alias: Write_iceberg1
+  alias: Write_iceberg2
   retentionVersions: ""
   logicalSchema:
     properties:
@@ -47,7 +47,7 @@ productState:
   refreshInterval: None
 transformation:
   - isDynamic: true
-    alias: Spark_SQL_1
+    alias: Spark_SQL_2
     description: read_csv_using_spark_sql
     sequence: 2
     inputDataFrameList:

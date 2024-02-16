@@ -1,11 +1,11 @@
-version: 0.0.2
+version: 0.0.4
 jobId: "381"
 jobName: Test_load_iceberg_jdbc_SCD1_Mansi
 jobType: Source Aligned Data Product
 domain: finance
-alias: write_in_iceberg3
+alias: write_in_iceberg
 discoveryPort:
-  name: Test_load_iceberg_jdbc_SCD1_Mansi_multiple
+  name: Test_load_iceberg_jdbc_SCD1_Mansi
 inputPorts:
   - alias: read_csv_onprim_with_s3_conn_vishnu_1
     isDynamic: true
@@ -23,10 +23,7 @@ productState:
   isDynamic: true
   alias: write_in_iceberg
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      City: STRING
-      Region: STRING
+  logicalSchema: ""
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: SCD1
@@ -40,10 +37,12 @@ productState:
     enforceSchemaMethod: Warning
     catalogType: postgres
     changeTrackingColumns:
-      - value,name
+      - value
+      - name
     timestampColumn: modified2
     primaryKey:
-      - id,name
+      - id
+      - name
   refreshInterval: None
 transformation:
   - isDynamic: true

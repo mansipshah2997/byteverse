@@ -1,4 +1,4 @@
-version: 0.0.7
+version: 0.0.9
 jobId: "380"
 jobName: Test_load_iceberg_jdbc_SCD2_Mansi
 jobType: Source Aligned Data Product
@@ -30,9 +30,11 @@ productState:
   updateStrategyOptions:
     entityRef: ""
     uniqueKeyColumns:
-      - - id,name
+      - - id
+        - name
     changeTrackColumns:
-      - - value,name
+      - - value
+        - name
     timeTrackColumn: modified2
   tableName: iceberg_db2.scd2_data2
   warehousePath: /data/tmp/iceberg_warehouse/
@@ -44,10 +46,12 @@ productState:
     enforceSchemaMethod: Warning
     catalogType: postgres
     changeTrackingColumns:
-      - value,name
+      - value
+      - name
     timestampColumn: modified2
     primaryKey:
-      - id,name
+      - id
+      - name
   refreshInterval: None
 transformation:
   - isDynamic: true

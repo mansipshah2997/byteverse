@@ -1,11 +1,10 @@
-version: 0.0.12
-jobId: "380"
-jobName: Test_load_iceberg_jdbc_SCD2_Mansi
+version: 0.0.1
+jobId: "392"
+jobName: Test_iceberg_biglake_load_Mansi
 jobType: Source Aligned Data Product
-domain: finance
-alias: Write_iceberg
+alias: write_iceberg
 discoveryPort:
-  name: Test_load_iceberg_jdbc_SCD2_Mansi
+  name: Test_iceberg_biglake_load_Mansi
 inputPorts:
   - alias: read_csv_onprim_with_s3_conn_vishnu_1
     isDynamic: true
@@ -21,47 +20,31 @@ inputPorts:
     type: inputDelimited
 productState:
   isDynamic: true
-  alias: Write_iceberg
+  alias: write_iceberg
   retentionVersions: ""
   logicalSchema: ""
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
-  updateStrategy: SCD2
-  updateStrategyOptions:
-    entityRef: ""
-    uniqueKeyColumns:
-      - - id
-        - name
-    changeTrackColumns:
-      - - value
-        - name
-    timeTrackColumn: modified2
-  tableName: iceberg_db2.scd2_data2
-  warehousePath: /data/tmp/iceberg_warehouse/
-  catalogName: my_catalog
+  updateStrategy: Overwrite
+  tableName: iceberg_db.data_2_1
+  warehousePath: gs://dabur_poc_inutdata/iceberg_warehouse/
+  catalogName: random_catalog
   optional:
     persistDataFrame: false
     enableDataReconciliation: false
     enforceSchema: false
     enforceSchemaMethod: Warning
-    catalogType: postgres
-    changeTrackingColumns:
-      - value
-      - name
-    timestampColumn: modified2
-    primaryKey:
-      - id
-      - name
+    catalogType: biglake
   refreshInterval: None
 transformation:
   - isDynamic: true
     alias: Spark_SQL_1
-    description: read_csv_using_spark_sql
+    description: simple_select
     sequence: 2
     inputDataFrameList:
       - inputDataFrame: read_csv_onprim_with_s3_conn_vishnu_1
-        tempViewName: Temp
-    query: SELECT *,cast(modified AS date) as modified2 FROM Temp;
+        tempViewName: tmp
+    query: select * from tmp
     optional:
       persistDataFrame: false
     type: operationThroughSqlQuery

@@ -22,17 +22,13 @@ productState:
   isDynamic: true
   alias: loadIce
   retentionVersions: ""
-  logicalSchema: ""
+  logicalSchema:
+    properties:
+      City: STRING
+      Region: STRING
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: SCD2
-  updateStrategyOptions:
-    entityRef: ""
-    uniqueKeyColumns:
-      - - id
-    changeTrackColumns:
-      - - value
-    timeTrackColumn: modified2
   tableName: iceberg_db.scd2_data_2_1
   warehousePath: gs://dabur_poc_inutdata/iceberg_warehouse/
   catalogName: any

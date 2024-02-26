@@ -1,67 +1,56 @@
-version: 0.0.11
-jobId: "380"
-jobName: Test_load_iceberg_jdbc_SCD2_Mansi
+version: 0.0.2
+jobId: "394"
+jobName: Test_iceberg_biglake_SCD1_Mansi
 jobType: Source Aligned Data Product
-domain: finance
-alias: Write_iceberg
+domain: operation
+alias: Write_ice
 discoveryPort:
-  name: Test_load_iceberg_jdbc_SCD2_Mansi
+  name: Test_iceberg_biglake_SCD1_Mansi
 inputPorts:
-  - alias: read_csv_onprim_with_s3_conn_vishnu_1
+  - alias: gcp_read_csv_Mansi_1
     isDynamic: true
-    path: /data/tmp/input_data/incr_1.csv
+    path: gs://dabur_poc_inutdata/scd1_testing_csv/incr_1.csv
     optional:
       persistDataFrame: false
       advanceOptions:
         delimiter: ","
       enableDataReconciliation: false
       enforceSchema: false
-      connection: on_prim_testing_conn_s3_vishnu
-      dataSetUrn: urn:dv:dataset:fe039567-7e6b-4921-a55e-166965027888
+      connection: mansi_gcp_dummy
+      dataSetUrn: urn:dv:dataset:7dd6d6aa-4f56-4a6a-a558-b227ba5ad7c2
     type: inputDelimited
 productState:
   isDynamic: true
-  alias: Write_iceberg
+  alias: Write_ice
   retentionVersions: ""
   logicalSchema: ""
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
-  updateStrategy: SCD2
-  updateStrategyOptions:
-    entityRef: ""
-    uniqueKeyColumns:
-      - - id
-        - name
-    changeTrackColumns:
-      - - value
-        - name
-    timeTrackColumn: modified2
-  tableName: iceberg_db2.scd2_data2
-  warehousePath: /data/tmp/iceberg_warehouse/
-  catalogName: my_catalog
+  updateStrategy: SCD1
+  tableName: iceberg_db.scd1_data
+  warehousePath: gs://dabur_poc_inutdata/iceberg_warehouse/
+  catalogName: random_catalog
   optional:
     persistDataFrame: false
     enableDataReconciliation: false
     enforceSchema: false
     enforceSchemaMethod: Warning
-    catalogType: postgres
+    catalogType: biglake
     changeTrackingColumns:
       - value
-      - name
     timestampColumn: modified2
     primaryKey:
       - id
-      - name
   refreshInterval: None
 transformation:
   - isDynamic: true
     alias: Spark_SQL_1
-    description: read_csv_using_spark_sql
+    description: str_to_date
     sequence: 2
     inputDataFrameList:
-      - inputDataFrame: read_csv_onprim_with_s3_conn_vishnu_1
-        tempViewName: Temp
-    query: SELECT *,cast(modified AS date) as modified2 FROM Temp;
+      - inputDataFrame: gcp_read_csv_Mansi_1
+        tempViewName: temp
+    query: SELECT *,cast(modified AS date) as modified2 FROM temp;
     optional:
       persistDataFrame: false
     type: operationThroughSqlQuery

@@ -1,4 +1,4 @@
-version: 0.0.4
+version: 0.0.5
 jobId: "392"
 jobName: Test_iceberg_biglake_load_Mansi
 jobType: Source Aligned Data Product
@@ -7,7 +7,7 @@ alias: write_iceberg
 discoveryPort:
   name: Test_iceberg_biglake_load_Mansi
 inputPorts:
-  - alias: gcp_read_csv_mansi_1
+  - alias: gcp_read_csv_Mansi_1
     isDynamic: true
     path: gs://dabur_poc_inutdata/scd1_testing_csv/incr_1.csv
     optional:
@@ -16,17 +16,14 @@ inputPorts:
         delimiter: ","
       enableDataReconciliation: false
       enforceSchema: false
-      connection: Mansi_S3
-      dataSetUrn: urn:dv:dataset:f64cc547-52a8-4b6c-b3af-d8b366d250d6
+      connection: mansi_gcp_dummy
+      dataSetUrn: urn:dv:dataset:7dd6d6aa-4f56-4a6a-a558-b227ba5ad7c2
     type: inputDelimited
 productState:
   isDynamic: true
   alias: write_iceberg
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      City: STRING
-      Region: STRING
+  logicalSchema: ""
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: Overwrite
@@ -46,8 +43,8 @@ transformation:
     description: simple_select
     sequence: 2
     inputDataFrameList:
-      - inputDataFrame: gcp_read_csv_mansi_1
-        tempViewName: tmp
+      - inputDataFrame: gcp_read_csv_Mansi_1
+        tempViewName: ""
     query: select * from tmp
     optional:
       persistDataFrame: false

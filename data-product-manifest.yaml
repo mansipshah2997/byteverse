@@ -1,4 +1,4 @@
-version: 0.0.2
+version: 0.0.4
 jobId: "392"
 jobName: Test_iceberg_biglake_load_Mansi
 jobType: Source Aligned Data Product
@@ -23,10 +23,7 @@ productState:
   isDynamic: true
   alias: write_iceberg
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      City: STRING
-      Region: STRING
+  logicalSchema: ""
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: Overwrite
@@ -47,7 +44,7 @@ transformation:
     sequence: 2
     inputDataFrameList:
       - inputDataFrame: gcp_read_csv_mansi_1
-        tempViewName: ""
+        tempViewName: tmp
     query: select * from tmp
     optional:
       persistDataFrame: false

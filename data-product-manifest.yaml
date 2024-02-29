@@ -3,7 +3,7 @@ jobId: "398"
 jobName: Test_sample_data_state_mngt_Mansi
 jobType: Source Aligned Data Product
 domain: sale
-alias: read
+alias: read1
 discoveryPort:
   name: Test_sample_data_state_mngt_Mansi
 inputPorts:

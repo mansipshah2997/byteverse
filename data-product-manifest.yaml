@@ -1,10 +1,11 @@
 version: 0.0.1
-jobId: "395"
-jobName: Test_iceberg_biglake_SCD2_Mansi
+jobId: "405"
+jobName: Test_iceberg_biglake_load_Mansi copy
 jobType: Source Aligned Data Product
-alias: loadIce
+domain: operation
+alias: write_iceberg
 discoveryPort:
-  name: Test_iceberg_biglake_SCD2_Mansi
+  name: Test_iceberg_biglake_load_Mansi copy
 inputPorts:
   - alias: gcp_read_csv_Mansi_1
     isDynamic: true
@@ -20,39 +21,31 @@ inputPorts:
     type: inputDelimited
 productState:
   isDynamic: true
-  alias: loadIce
+  alias: write_iceberg
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      City: STRING
-      Region: STRING
+  logicalSchema: ""
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
-  updateStrategy: SCD2
-  tableName: iceberg_db.scd2_data_2_1
+  updateStrategy: Overwrite
+  tableName: iceberg_db.data_2_1
   warehousePath: gs://dabur_poc_inutdata/iceberg_warehouse/
-  catalogName: any
+  catalogName: random_catalog
   optional:
     persistDataFrame: false
     enableDataReconciliation: false
     enforceSchema: false
     enforceSchemaMethod: Warning
     catalogType: biglake
-    changeTrackingColumns:
-      - value
-    timestampColumn: modified2
-    primaryKey:
-      - id
   refreshInterval: None
 transformation:
   - isDynamic: true
     alias: Spark_SQL_1
-    description: str_to_date
+    description: simple_select
     sequence: 2
     inputDataFrameList:
       - inputDataFrame: gcp_read_csv_Mansi_1
-        tempViewName: temp
-    query: SELECT *,cast(modified AS date) as modified2 FROM temp;
+        tempViewName: tmp
+    query: select * from tmp
     optional:
       persistDataFrame: false
     type: operationThroughSqlQuery

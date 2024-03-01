@@ -3,7 +3,7 @@ jobId: "405"
 jobName: Test_iceberg_biglake_load_Mansi copy
 jobType: Source Aligned Data Product
 domain: operation
-alias: write_iceberg
+alias: write_iceberg1
 discoveryPort:
   name: Test_iceberg_biglake_load_Mansi copy
 inputPorts:
@@ -23,7 +23,10 @@ productState:
   isDynamic: true
   alias: write_iceberg
   retentionVersions: ""
-  logicalSchema: ""
+  logicalSchema:
+    properties:
+      City: STRING
+      Region: STRING
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: Overwrite

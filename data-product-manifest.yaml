@@ -1,4 +1,4 @@
-version: 0.0.5
+version: 0.0.6
 jobId: "361"
 jobName: Test_manifest_pyspark_Mansi
 jobType: Source Aligned Data Product
@@ -23,16 +23,14 @@ productState:
   isDynamic: true
   alias: write_csv
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      City: STRING
-      Region: STRING
+  logicalSchema: ""
   stateStoreType: writeDataFrameToCsv
   isProfilingEnabled: false
   partitionFiles: 1
   path: s3://byte-etl-externaldemo/custom_pyspark_output/weather_data_daily_test.csv
   optional:
     persistDataFrame: false
+    overwrite: true
     advanceOptions:
       header: true
     addRunIdColumn: false

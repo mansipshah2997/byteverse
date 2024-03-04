@@ -1,4 +1,4 @@
-version: 0.0.4
+version: 0.0.5
 jobId: "361"
 jobName: Test_manifest_pyspark_Mansi
 jobType: Source Aligned Data Product
@@ -23,10 +23,7 @@ productState:
   isDynamic: true
   alias: write_csv
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      City: STRING
-      Region: STRING
+  logicalSchema: ""
   stateStoreType: writeDataFrameToCsv
   isProfilingEnabled: false
   partitionFiles: 1
@@ -46,7 +43,7 @@ transformation:
     sequence: 2
     inputDataFrameList:
       - inputDataFrame: weather_day_1
-        tempViewName: ""
+        tempViewName: data
     query: select city from data
     optional:
       persistDataFrame: false

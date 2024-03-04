@@ -1,9 +1,9 @@
-version: 0.0.6
+version: 0.0.7
 jobId: "398"
 jobName: Test_sample_data_state_mngt_Mansi
 jobType: Source Aligned Data Product
 domain: sale
-alias: read5
+alias: read
 discoveryPort:
   name: Test_sample_data_state_mngt_Mansi
 inputPorts:
@@ -24,7 +24,7 @@ productState:
   catalogType: glue
   enforceSchema: false
   stepName: read
-  tableName: select * from glue.s3Source.weather_daily
+  tableName: select lat.lon from glue.s3Source.weather_daily
   warehousePath: s3://bp-spark-sql-library-test-acc/
   catalogName: glue
   type: readDataIceberg

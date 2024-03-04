@@ -1,61 +1,50 @@
 version: 0.0.4
-jobId: "381"
-jobName: Test_load_iceberg_jdbc_SCD1_Mansi
+jobId: "361"
+jobName: Test_manifest_pyspark_Mansi
 jobType: Source Aligned Data Product
-domain: finance
-alias: write_in_iceberg3
+domain: sale
+alias: write_csv
 discoveryPort:
-  name: Test_load_iceberg_jdbc_SCD1_Mansi_multiple
+  name: Test_manifest_pyspark_Mansi
 inputPorts:
-  - alias: read_csv_onprim_with_s3_conn_vishnu_1
+  - alias: weather_day_1
     isDynamic: true
-    path: /data/tmp/input_data/incr_1.csv
+    path: s3://byte-etl-externaldemo/weather_data/20230626130122.csv
     optional:
       persistDataFrame: false
       advanceOptions:
         delimiter: ","
       enableDataReconciliation: false
       enforceSchema: false
-      connection: on_prim_testing_conn_s3_vishnu
-      dataSetUrn: urn:dv:dataset:fe039567-7e6b-4921-a55e-166965027888
+      connection: S3 with User
+      dataSetUrn: urn:dv:dataset:3a0494b4-86e9-430f-afcb-877a0d9bea95
     type: inputDelimited
 productState:
   isDynamic: true
-  alias: write_in_iceberg
+  alias: write_csv
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      City: STRING
-      Region: STRING
-  stateStoreType: loadDataIceberg
+  logicalSchema: ""
+  stateStoreType: writeDataFrameToCsv
   isProfilingEnabled: false
-  updateStrategy: SCD1
-  tableName: iceberg_meta.scd1_data
-  warehousePath: /data/tmp/iceberg_warehouse/
-  catalogName: my_catalog
+  partitionFiles: 1
+  path: s3://byte-etl-externaldemo/custom_pyspark_output/weather_data_daily_test.csv
   optional:
     persistDataFrame: false
+    advanceOptions:
+      header: true
+    addRunIdColumn: false
     enableDataReconciliation: false
     enforceSchema: false
-    enforceSchemaMethod: Warning
-    catalogType: postgres
-    changeTrackingColumns:
-      - value
-      - name
-    timestampColumn: modified2
-    primaryKey:
-      - id
-      - name
   refreshInterval: None
 transformation:
   - isDynamic: true
     alias: Spark_SQL_1
-    description: read_csv_using_spark_sql
+    description: sql
     sequence: 2
     inputDataFrameList:
-      - inputDataFrame: read_csv_onprim_with_s3_conn_vishnu_1
-        tempViewName: Temp
-    query: SELECT *,cast(modified AS date) as modified2 FROM Temp;
+      - inputDataFrame: weather_day_1
+        tempViewName: ""
+    query: select city from data
     optional:
       persistDataFrame: false
     type: operationThroughSqlQuery

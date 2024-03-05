@@ -1,11 +1,11 @@
 version: 0.0.6
 jobId: "394"
-jobName: Test_iceberg_biglake_SCD1_Mansi_1
+jobName: Test_iceberg_biglake_SCD1_Mansi
 jobType: Source Aligned Data Product
 domain: operation
 alias: Write_ice_1
 discoveryPort:
-  name: Test_iceberg_biglake_SCD1_Mansi
+  name: Test_iceberg_biglake_SCD1_Mansi_2
 inputPorts:
   - alias: gcp_read_csv_Mansi_1
     isDynamic: true

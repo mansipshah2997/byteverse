@@ -3,7 +3,7 @@ jobId: "409"
 jobName: Test _sample_data_load_iceberg_Mansi
 jobType: Source Aligned Data Product
 domain: sale
-alias: step_3
+alias: step_3_a
 discoveryPort:
   name: Test _sample_data_load_iceberg_Mansi
 inputPorts:

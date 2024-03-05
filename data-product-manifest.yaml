@@ -1,9 +1,9 @@
 version: 0.0.6
 jobId: "394"
-jobName: Test_iceberg_biglake_SCD1_Mansi
+jobName: Test_iceberg_biglake_SCD1_Mansi_1
 jobType: Source Aligned Data Product
 domain: operation
-alias: Write_ice
+alias: Write_ice_1
 discoveryPort:
   name: Test_iceberg_biglake_SCD1_Mansi
 inputPorts:
@@ -23,7 +23,10 @@ productState:
   isDynamic: true
   alias: Write_ice
   retentionVersions: ""
-  logicalSchema: ""
+  logicalSchema:
+    properties:
+      City: STRING
+      Region: STRING
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: SCD1

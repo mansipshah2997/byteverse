@@ -1,62 +1,59 @@
-version: 0.0.10
-jobId: "398"
-jobName: Test_sample_data_state_mngt_Mansi
+version: 0.0.3
+jobId: "394"
+jobName: Test_iceberg_biglake_SCD1_Mansi
 jobType: Source Aligned Data Product
-domain: sale
-alias: read6
+domain: operation
+alias: Write_ice
 discoveryPort:
-  name: Test_sample_data_state_mngt_Mansi
+  name: Test_iceberg_biglake_SCD1_Mansi
 inputPorts:
-  - alias: weather_data_Mansi_1
+  - alias: gcp_read_csv_Mansi_1
     isDynamic: true
-    path: s3://byte-etl-externaldemo/weather_data/20230626130122.csv
+    path: gs://dabur_poc_inutdata/scd1_testing_csv/incr_1.csv
     optional:
       persistDataFrame: false
       advanceOptions:
         delimiter: ","
       enableDataReconciliation: false
       enforceSchema: false
-      connection: Mansi_S3
-      dataSetUrn: urn:dv:dataset:7ea0f9b9-1b2b-4d8c-a3b6-2a68936e1ad9
+      connection: mansi_gcp_dummy
+      dataSetUrn: urn:dv:dataset:7dd6d6aa-4f56-4a6a-a558-b227ba5ad7c2
     type: inputDelimited
 productState:
-  persistDataFrame: false
-  catalogType: glue
-  enforceSchema: false
-  stepName: read
-  tableName: select lat,lon from glue.s3Source.weather_daily
-  warehousePath: s3://bp-spark-sql-library-test-acc/
-  catalogName: glue
-  type: readDataIceberg
-  isStateManagement: true
-  sequence: 3
-  alias: read
-  refreshInterval: None
+  isDynamic: true
+  alias: Write_ice
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      Actual:
-        type: STRING
-        description: ""
-      Predicted:
-        type: STRING
-        description: ""
-  enforceSchemaMethod: ""
+  logicalSchema: ""
+  stateStoreType: loadDataIceberg
   isProfilingEnabled: false
+  updateStrategy: SCD1
+  tableName: iceberg_db.scd1_data
+  warehousePath: gs://dabur_poc_inutdata/iceberg_warehouse/
+  catalogName: random_catalog
+  optional:
+    persistDataFrame: false
+    enableDataReconciliation: false
+    enforceSchema: false
+    enforceSchemaMethod: Warning
+    catalogType: biglake
+    changeTrackingColumns:
+      - value
+    timestampColumn: modified2
+    primaryKey:
+      - id
+  refreshInterval: None
 transformation:
   - isDynamic: true
-    alias: EMR_PySpark_1
-    description: Run pyspark code
+    alias: Spark_SQL_1
+    description: str_to_date
     sequence: 2
-    arguments:
-      - s3://byte-etl-externaldemo/weather_data/20230626130122.csv
-    pythonFilePath: s3://bp-spark-sql-library-test-acc/custom-jobs/CustomPythonJobWriteParquetTimeOut.py
     inputDataFrameList:
-      - inputDataFrame: ""
-        tempViewName: ""
+      - inputDataFrame: gcp_read_csv_Mansi_1
+        tempViewName: temp
+    query: SELECT *,cast(modified AS date) as modified2 FROM temp;
     optional:
-      pythonEnvTarGZPath: s3://byte-etl-externaldemo/pyspark_serverless_test/pyspark_venv.tar.gz
-    type: customPySparkEMRServerless
+      persistDataFrame: false
+    type: operationThroughSqlQuery
 controlPort:
   dataQualityRules: {}
 outputPort:

@@ -1,46 +1,79 @@
 version: 0.0.2
-jobId: "375"
-jobName: Test_read_csv_write_iceberg_AWS_Mansi
+jobId: "409"
+jobName: Test _sample_data_load_iceberg_Mansi
 jobType: Source Aligned Data Product
 domain: sale
-alias: ice
+alias: step_3
 discoveryPort:
-  name: Test_read_csv_write_iceberg_AWS_Mansi
+  name: Test _sample_data_load_iceberg_Mansi
 inputPorts:
-  - alias: Parquet_Mansi_s3_1
+  - alias: daily_weather
     isDynamic: true
-    path: s3://byte-etl-externaldemo/weather_data/
+    path: s3://byte-etl-externaldemo/weather_data/20230626130122.csv
     optional:
       persistDataFrame: false
       advanceOptions:
         delimiter: ","
       enableDataReconciliation: false
       enforceSchema: false
-      connection: Mansi_S3
-      dataSetUrn: urn:dv:dataset:b3deed73-c9c2-49ca-8323-ce16426fe4ba
+      connection: S3 with User
+      dataSetUrn: urn:dv:dataset:3a0494b4-86e9-430f-afcb-877a0d9bea95
     type: inputDelimited
 productState:
   isDynamic: true
-  alias: ice
+  alias: step_3
   retentionVersions: ""
   logicalSchema:
     properties:
-      City: STRING
-      Region: STRING
+      city:
+        type: STRING
+        description: ""
+      region:
+        type: STRING
+        description: ""
+      lat:
+        type: STRING
+        description: ""
+      lon:
+        type: STRING
+        description: ""
+      tz_id:
+        type: STRING
+        description: ""
+      temp_c:
+        type: STRING
+        description: ""
+      last_updated:
+        type: STRING
+        description: ""
+      last_updated_epoch:
+        type: STRING
+        description: ""
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: Overwrite
-  tableName: s3source.demotable
+  tableName: s3source.weather_dataset
   warehousePath: s3://bp-spark-sql-library-test-acc/
   catalogName: glue
   optional:
     persistDataFrame: false
     enableDataReconciliation: false
-    enforceSchema: true
+    enforceSchema: false
     enforceSchemaMethod: Warning
     catalogType: glue
   refreshInterval: None
-transformation: []
+transformation:
+  - isDynamic: true
+    alias: Spark_SQL_1
+    description: "test 1 "
+    sequence: 2
+    inputDataFrameList:
+      - inputDataFrame: daily_weather
+        tempViewName: test
+    query: select * from test
+    optional:
+      persistDataFrame: false
+    type: operationThroughSqlQuery
 controlPort:
   dataQualityRules: {}
 outputPort:
@@ -49,3 +82,4 @@ outputPort:
       queryType: SQL
     - channelType: Dataproduct
       queryType: SQL
+timeout: 30

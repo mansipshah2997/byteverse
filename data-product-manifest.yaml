@@ -1,11 +1,11 @@
-version: 0.0.7
+version: 0.0.8
 jobId: "394"
 jobName: Test_iceberg_biglake_SCD1_Mansi
 jobType: Source Aligned Data Product
 domain: operation
-alias: Write_ice4
+alias: Write_ice
 discoveryPort:
-  name: Test_iceberg_biglake_SCD1_Mansi7
+  name: Test_iceberg_biglake_SCD1_Mansi
 inputPorts:
   - alias: gcp_read_csv_Mansi_1
     isDynamic: true
@@ -23,9 +23,7 @@ productState:
   isDynamic: true
   alias: Write_ice
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      city: STRING
+  logicalSchema: ""
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: SCD1
@@ -43,7 +41,7 @@ productState:
     timestampColumn: modified2
     primaryKey:
       - id
-  refreshInterval: None
+  refreshInterval: 0 10 31 2 1
 transformation:
   - isDynamic: true
     alias: Spark_SQL_1

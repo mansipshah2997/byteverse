@@ -1,4 +1,4 @@
-version: 0.0.14
+version: 0.0.15
 jobId: "380"
 jobName: Test_load_iceberg_jdbc_SCD2_Mansi
 jobType: Source Aligned Data Product
@@ -23,7 +23,11 @@ productState:
   isDynamic: true
   alias: Write_iceberg
   retentionVersions: ""
-  logicalSchema: ""
+  logicalSchema:
+    properties:
+      a:
+        type: STRING
+        description: ""
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: SCD2

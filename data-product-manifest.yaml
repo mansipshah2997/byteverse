@@ -1,67 +1,154 @@
-version: 0.0.10
-jobId: "398"
-jobName: Test_sample_data_state_mngt_Mansi
+version: 0.0.1
+jobId: "121"
+jobName: Weather Daily copy copy
 jobType: Source Aligned Data Product
-domain: sale
-alias: read6
+developerId: 384fafba-c5d1-4671-ae73-e2b1d2b3c2dc
+domain: manufacturing
+alias: Load_all_data_weather_daily
 discoveryPort:
-  name: Test_sample_data_state_mngt_Mansi
+  name: Weather Daily copy copy
 inputPorts:
-  - alias: weather_data_Mansi_1
+  - alias: Weather_1
     isDynamic: true
-    path: s3://byte-etl-externaldemo/weather_data/20230626130122.csv
+    path: s3://byte-etl-externaldemo/weather_data/##process_date##*.csv
     optional:
       persistDataFrame: false
       advanceOptions:
         delimiter: ","
       enableDataReconciliation: false
       enforceSchema: false
-      connection: Mansi_S3
-      dataSetUrn: urn:dv:dataset:7ea0f9b9-1b2b-4d8c-a3b6-2a68936e1ad9
+      dataSetUrn: urn:dv:dataset:a57500cd-e699-4403-a577-6f0000fbf71c
     type: inputDelimited
 productState:
-  persistDataFrame: false
-  catalogType: glue
-  enforceSchema: false
-  stepName: read
-  tableName: select lat,lon from glue.s3Source.weather_daily
-  warehousePath: s3://bp-spark-sql-library-test-acc/
-  catalogName: glue
-  type: readDataIceberg
-  isStateManagement: true
-  sequence: 3
-  alias: read
-  refreshInterval: None
+  isDynamic: true
+  alias: Load_all_data_weather_daily
   retentionVersions: ""
   logicalSchema:
     properties:
-      Actual:
+      City:
         type: STRING
         description: ""
-      Predicted:
+      Region:
         type: STRING
         description: ""
-  enforceSchemaMethod: ""
+      Country:
+        type: STRING
+        description: ""
+      Latitude:
+        type: STRING
+        description: ""
+      Longitude:
+        type: STRING
+        description: ""
+      Timezone:
+        type: STRING
+        description: ""
+      Local Time:
+        type: STRING
+        description: ""
+      Cloud ID:
+        type: STRING
+        description: ""
+      Feels like Celcius:
+        type: STRING
+        description: ""
+      Feels like fahrenheit:
+        type: STRING
+        description: ""
+      Gust speed in kph:
+        type: STRING
+        description: ""
+      Gust speed in mph:
+        type: STRING
+        description: ""
+      Humidity:
+        type: STRING
+        description: ""
+      Is day time?:
+        type: STRING
+        description: ""
+      Last update:
+        type: STRING
+        description: ""
+      Last updated time in epoch:
+        type: STRING
+        description: ""
+      Precipitation in inch:
+        type: STRING
+        description: ""
+      Precipitation in mm:
+        type: STRING
+        description: ""
+      Pressure:
+        type: STRING
+        description: ""
+      Precipitation in mb:
+        type: STRING
+        description: ""
+      Temperature in celcius:
+        type: STRING
+        description: ""
+      Temperature in fahrenheit:
+        type: STRING
+        description: ""
+      UV:
+        type: STRING
+        description: ""
+      Visibility in km:
+        type: STRING
+        description: ""
+      Visibility in miles:
+        type: STRING
+        description: ""
+      Wind Degree:
+        type: STRING
+        description: ""
+      Wind Direction:
+        type: STRING
+        description: ""
+      Wind in kph:
+        type: STRING
+        description: ""
+      Wind in mph:
+        type: STRING
+        description: ""
+  stateStoreType: loadDataIceberg
   isProfilingEnabled: false
+  updateStrategy: Append
+  tableName: weather_daily_0704
+  warehousePath: s3://bp-spark-sql-library-test-acc/
+  catalogName: s3Source
+  optional:
+    persistDataFrame: false
+    enableDataReconciliation: false
+    enforceSchema: true
+    enforceSchemaMethod: Warning
+    catalogType: glue
+  refreshInterval: None
 transformation:
   - isDynamic: true
-    alias: EMR_PySpark_1
-    description: Run pyspark code
+    alias: Spark_SQL_1
+    description: Select all data
     sequence: 2
-    arguments:
-      - s3://byte-etl-externaldemo/weather_data/20230626130122.csv
-    pythonFilePath: s3://bp-spark-sql-library-test-acc/custom-jobs/CustomPythonJobWriteParquetTimeOut.py
     inputDataFrameList:
-      - inputDataFrame: ""
-        tempViewName: ""
+      - inputDataFrame: Weather_1
+        tempViewName: weather
+    query: select * from weather
     optional:
-      pythonEnvTarGZPath: s3://byte-etl-externaldemo/pyspark_serverless_test/pyspark_venv.tar.gz
-    type: customPySparkEMRServerless
+      persistDataFrame: false
+    type: operationThroughSqlQuery
 controlPort:
-  dataQualityRules: {}
-outputPort:
-  subscriptionChannels:
-    - channelType: Postgres
-      queryType: SQL
-    - channelType: Dataproduct
-      queryType: SQL
+  dataQualityRules:
+    NullValueCheck:
+      productState:
+        checks:
+          - column: City
+            expression: ==
+            number: 1
+          - column: Region
+            expression: ==
+            number: 1
+          - column: Country
+            expression: ==
+            number: 1
+        referenceAlias: Load_all_data_weather_daily

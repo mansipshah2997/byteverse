@@ -7,6 +7,7 @@ domain: manufacturing
 alias: Load_all_data_weather_daily
 discoveryPort:
   name: Weather Daily copy copy
+  shortDescription: weather daily
 inputPorts:
   - alias: Weather_1
     isDynamic: true

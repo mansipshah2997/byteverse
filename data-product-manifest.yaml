@@ -1,4 +1,4 @@
-version: 0.0.1
+version: 0.0.3
 jobId: "1055"
 jobName: Mansi_SADP_timestamp_test
 jobType: Source Aligned Data Product
@@ -50,7 +50,8 @@ transformation:
     inputDataFrameList:
       - inputDataFrame: Weather_Data_1
         tempViewName: temp
-    query: select *,cast(localtime as timestamp_ntz) as timestamp_ntz from temp
+    query: select monotonically_increasing_id() AS rowid,*,cast(localtime as
+      timestamp_ntz) as timestamp_ntz from temp
     optional:
       persistDataFrame: false
     type: operationThroughSqlQuery

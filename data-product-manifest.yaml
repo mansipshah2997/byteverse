@@ -24,7 +24,10 @@ productState:
   isDynamic: true
   alias: write_to_postgres
   retentionVersions: ""
-  logicalSchema: ""
+  logicalSchema: 
+    properties:
+      id: STRING
+      name: STRING
   stateStoreType: writeDataFrameToPostgresTable
   isProfilingEnabled: false
   updateStrategy: Overwrite

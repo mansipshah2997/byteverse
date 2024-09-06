@@ -4,7 +4,7 @@ jobName: test_lineage_join_Mansi_AWS
 jobType: Source Aligned Data Product
 developerId: a7c26b3c-3e9b-4fd9-bde8-805d1fd1697e
 domain: finance
-alias: write_to_postgres
+alias: write_to_postgres2
 discoveryPort:
   name: test_lineage_join_Mansi_AWS
 inputPorts:

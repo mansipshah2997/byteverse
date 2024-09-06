@@ -1,15 +1,16 @@
-version: 0.0.10
-jobId: "398"
-jobName: Test_sample_data_state_mngt_Mansi
+version: 0.0.1
+jobId: "1079"
+jobName: test_lineage_join_Mansi_AWS
 jobType: Source Aligned Data Product
-domain: sale
-alias: read6
+developerId: a7c26b3c-3e9b-4fd9-bde8-805d1fd1697e
+domain: finance
+alias: write_to_postgres
 discoveryPort:
-  name: Test_sample_data_state_mngt_Mansi
+  name: test_lineage_join_Mansi_AWS
 inputPorts:
-  - alias: weather_data_Mansi_1
+  - alias: scores_s3_1
     isDynamic: true
-    path: s3://byte-etl-externaldemo/weather_data/20230626130122.csv
+    path: s3://byte-etl-externaldemo/demo_tmp/scores.csv
     optional:
       persistDataFrame: false
       advanceOptions:
@@ -17,51 +18,50 @@ inputPorts:
       enableDataReconciliation: false
       enforceSchema: false
       connection: Mansi_S3
-      dataSetUrn: urn:dv:dataset:7ea0f9b9-1b2b-4d8c-a3b6-2a68936e1ad9
+      dataSetUrn: urn:dv:dataset:c1315b95-4efd-4781-8529-0a741ebcd775
+    type: inputDelimited
+  - alias: students_s3_1
+    isDynamic: true
+    path: s3://byte-etl-externaldemo/demo_tmp/students.csv
+    optional:
+      persistDataFrame: false
+      advanceOptions:
+        delimiter: ","
+      enableDataReconciliation: false
+      enforceSchema: false
+      connection: Mansi_S3
+      dataSetUrn: urn:dv:dataset:413974a8-1695-444b-9ace-872a244fa9e8
     type: inputDelimited
 productState:
-  persistDataFrame: false
-  catalogType: glue
-  enforceSchema: false
-  stepName: read
-  tableName: select lat,lon from glue.s3Source.weather_daily
-  warehousePath: s3://bp-spark-sql-library-test-acc/
-  catalogName: glue
-  type: readDataIceberg
-  isStateManagement: true
-  sequence: 3
-  alias: read
-  refreshInterval: None
+  isDynamic: true
+  alias: write_to_postgres
   retentionVersions: ""
   logicalSchema:
-    properties:
-      Actual:
-        type: STRING
-        description: ""
-      Predicted:
-        type: STRING
-        description: ""
-  enforceSchemaMethod: ""
+    properties: {}
+  stateStoreType: writeDataFrameToPostgresTable
   isProfilingEnabled: false
+  updateStrategy: Overwrite
+  connection: demo_postgres
+  tableName: students_joined
+  optional:
+    persistDataFrame: false
+    enableDataReconciliation: false
+    enforceSchema: false
+  refreshInterval: None
 transformation:
   - isDynamic: true
-    alias: EMR_PySpark_1
-    description: Run pyspark code
-    sequence: 2
-    arguments:
-      - s3://byte-etl-externaldemo/weather_data/20230626130122.csv
-    pythonFilePath: s3://bp-spark-sql-library-test-acc/custom-jobs/CustomPythonJobWriteParquetTimeOut.py
+    alias: Spark_SQL_1
+    description: join query
+    sequence: 3
     inputDataFrameList:
-      - inputDataFrame: ""
-        tempViewName: ""
+      - inputDataFrame: students_s3_1
+        tempViewName: file1
+      - inputDataFrame: scores_s3_1
+        tempViewName: file2
+    query: SELECT f1.id AS id, (f1.value + f2.score) AS calculated_column FROM file1
+      f1 JOIN file2 f2 ON f1.id = f2.id
     optional:
-      pythonEnvTarGZPath: s3://byte-etl-externaldemo/pyspark_serverless_test/pyspark_venv.tar.gz
-    type: customPySparkEMRServerless
+      persistDataFrame: false
+    type: operationThroughSqlQuery
 controlPort:
   dataQualityRules: {}
-outputPort:
-  subscriptionChannels:
-    - channelType: Postgres
-      queryType: SQL
-    - channelType: Dataproduct
-      queryType: SQL

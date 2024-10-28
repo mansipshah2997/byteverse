@@ -21,7 +21,7 @@ inputPorts:
     type: inputParquet
 productState:
   isDynamic: true
-  alias: write_to_postgres10
+  alias: write_to_postgres
   retentionVersions: ""
   logicalSchema:
     properties:

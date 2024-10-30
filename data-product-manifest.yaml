@@ -7,7 +7,7 @@ alias: write_to_postgres
 discoveryPort:
   name: test_lineage_on_prem_mansi
 inputPorts:
-  - alias: test_par_onprem_1
+  - alias: test_par_onprem_10
     isDynamic: true
     path: /data/tmp/sample2.parquet
     optional:
@@ -21,9 +21,11 @@ inputPorts:
     type: inputParquet
 productState:
   isDynamic: true
-  alias: write_to_postgres
+  alias: write_to_postgres10
   retentionVersions: ""
-  logicalSchema: ""
+  logicalSchema:
+    properties:
+      city: String
   stateStoreType: writeDataFrameToPostgresTable
   isProfilingEnabled: false
   updateStrategy: Overwrite

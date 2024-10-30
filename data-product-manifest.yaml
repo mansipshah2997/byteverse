@@ -5,9 +5,9 @@ developerId: a7c26b3c-3e9b-4fd9-bde8-805d1fd1697e
 domain: supply_chain
 alias: write_to_postgres
 discoveryPort:
-  name: test_lineage_on_prem_mansi
+  name: test_lineage_on_prem_mansi10
 inputPorts:
-  - alias: test_par_onprem_10
+  - alias: test_par_onprem_1
     isDynamic: true
     path: /data/tmp/sample2.parquet
     optional:
@@ -21,7 +21,7 @@ inputPorts:
     type: inputParquet
 productState:
   isDynamic: true
-  alias: write_to_postgres10
+  alias: write_to_postgres15
   retentionVersions: ""
   logicalSchema:
     properties:

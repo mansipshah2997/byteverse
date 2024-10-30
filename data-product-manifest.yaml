@@ -3,7 +3,7 @@ jobName: test_lineage_on_prem_mansi
 jobType: Source Aligned Data Product
 developerId: a7c26b3c-3e9b-4fd9-bde8-805d1fd1697e
 domain: supply_chain
-alias: write_to_postgres10
+alias: write_to_postgres
 discoveryPort:
   name: test_lineage_on_prem_mansi
 inputPorts:
@@ -23,10 +23,7 @@ productState:
   isDynamic: true
   alias: write_to_postgres
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      City:STRING
-      Region:STRING
+  logicalSchema: ""
   stateStoreType: writeDataFrameToPostgresTable
   isProfilingEnabled: false
   updateStrategy: Overwrite
@@ -37,6 +34,17 @@ productState:
     enableDataReconciliation: false
     enforceSchema: false
   refreshInterval: None
-transformation: []
+transformation:
+  - isDynamic: true
+    alias: Spark_SQL_1
+    description: select all
+    sequence: 2
+    inputDataFrameList:
+      - inputDataFrame: test_par_onprem_1
+        tempViewName: temp
+    query: select * from temp
+    optional:
+      persistDataFrame: false
+    type: operationThroughSqlQuery
 controlPort:
   dataQualityRules: {}

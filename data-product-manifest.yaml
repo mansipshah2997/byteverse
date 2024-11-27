@@ -1,67 +1,70 @@
-version: 0.0.10
-jobId: "398"
-jobName: Test_sample_data_state_mngt_Mansi
-jobType: Source Aligned Data Product
-domain: sale
-alias: read6
+version: 0.0.4
+jobId: "1022"
+jobName: DCAs Responses
+jobType: Consumption Ready Data Product
+developerId: e57fd089-0c45-4273-8d8d-92f488de08b7
+domain: manufacturing
+alias: write_iceberg
 discoveryPort:
-  name: Test_sample_data_state_mngt_Mansi
+  name: DCAs Responses
 inputPorts:
-  - alias: weather_data_Mansi_1
+  - alias: SAF_SBO_Form_Answer_2
     isDynamic: true
-    path: s3://byte-etl-externaldemo/weather_data/20230626130122.csv
+    dataProductUrn: urn:dv:dataproduct:4162b5e9-d98d-4b70-961b-fda23503dfde
+    filter: ""
+    projection: ""
     optional:
       persistDataFrame: false
-      advanceOptions:
-        delimiter: ","
-      enableDataReconciliation: false
-      enforceSchema: false
-      connection: Mansi_S3
-      dataSetUrn: urn:dv:dataset:7ea0f9b9-1b2b-4d8c-a3b6-2a68936e1ad9
-    type: inputDelimited
+    type: dataproduct
+  - alias: SAF_SBO_Form_2
+    isDynamic: true
+    dataProductUrn: urn:dv:dataproduct:51214b73-7515-44c3-b95d-43d28d5638c9
+    filter: ""
+    projection: ""
+    optional:
+      persistDataFrame: false
+    type: dataproduct
 productState:
-  persistDataFrame: false
-  catalogType: glue
-  enforceSchema: false
-  stepName: read
-  tableName: select lat,lon from glue.s3Source.weather_daily
-  warehousePath: s3://bp-spark-sql-library-test-acc/
-  catalogName: glue
-  type: readDataIceberg
-  isStateManagement: true
-  sequence: 3
-  alias: read
-  refreshInterval: None
+  isDynamic: true
+  alias: write_iceberg
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      Actual:
-        type: STRING
-        description: ""
-      Predicted:
-        type: STRING
-        description: ""
-  enforceSchemaMethod: ""
+  logicalSchema: ""
+  stateStoreType: loadDataIceberg
   isProfilingEnabled: false
+  updateStrategy: Overwrite
+  tableName: iceberg.dcas_responses
+  warehousePath: wasbs://dataversedb@bienodfpocdataverse01.blob.core.windows.net/data/icebergWareHouse
+  catalogName: iceberg_catalog
+  optional:
+    persistDataFrame: false
+    enableDataReconciliation: false
+    enforceSchema: false
+    enforceSchemaMethod: Warning
+    catalogType: postgres
+  refreshInterval: 0 * * * *
 transformation:
   - isDynamic: true
-    alias: EMR_PySpark_1
-    description: Run pyspark code
-    sequence: 2
-    arguments:
-      - s3://byte-etl-externaldemo/weather_data/20230626130122.csv
-    pythonFilePath: s3://bp-spark-sql-library-test-acc/custom-jobs/CustomPythonJobWriteParquetTimeOut.py
+    alias: Spark_SQL_1
+    description: sql_query
+    sequence: 3
     inputDataFrameList:
-      - inputDataFrame: ""
-        tempViewName: ""
+      - inputDataFrame: SAF_SBO_Form_2
+        tempViewName: sf
+      - inputDataFrame: SAF_SBO_Form_Answer_2
+        tempViewName: sa
+    query: SELECT sf.id_factory, EXTRACT(YEAR FROM sa.dt_created) AS year,
+      EXTRACT(MONTH FROM sa.dt_created) AS month, 'DCAs Responses' AS module,
+      COUNT(*) AS totaltransaction FROM sf INNER JOIN sa ON sf.id_form =
+      sa.id_form WHERE sf.de_kind = 'InspeccionesAuditorias' AND sf.fl_deleted =
+      0 AND EXTRACT(YEAR FROM sa.dt_created) = 2024 AND sa.fl_deleted = 0 GROUP
+      BY sf.id_factory, EXTRACT(YEAR FROM sa.dt_created), EXTRACT(MONTH FROM
+      sa.dt_created) ORDER BY sf.id_factory, EXTRACT(YEAR FROM sa.dt_created),
+      EXTRACT(MONTH FROM sa.dt_created)
     optional:
-      pythonEnvTarGZPath: s3://byte-etl-externaldemo/pyspark_serverless_test/pyspark_venv.tar.gz
-    type: customPySparkEMRServerless
+      persistDataFrame: false
+      loggingOptions:
+        printSchema: true
+        count: true
+    type: operationThroughSqlQuery
 controlPort:
   dataQualityRules: {}
-outputPort:
-  subscriptionChannels:
-    - channelType: Postgres
-      queryType: SQL
-    - channelType: Dataproduct
-      queryType: SQL

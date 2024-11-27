@@ -1,4 +1,4 @@
-version: 0.0.4
+version: 0.0.6
 jobId: "1022"
 jobName: DCAs Responses
 jobType: Consumption Ready Data Product
@@ -28,7 +28,23 @@ productState:
   isDynamic: true
   alias: write_iceberg
   retentionVersions: ""
-  logicalSchema: ""
+  logicalSchema:
+    properties:
+      totaltransaction:
+        type: STRING
+        description: Total number of transactions
+      module:
+        type: STRING
+        description: Name of the module
+      month:
+        type: STRING
+        description: Month of the year
+      year:
+        type: STRING
+        description: Year
+      id_factory:
+        type: NUMBER
+        description: Factory ID
   stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: Overwrite

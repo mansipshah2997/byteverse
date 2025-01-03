@@ -1,67 +1,57 @@
-version: 0.0.10
-jobId: "398"
-jobName: Test_sample_data_state_mngt_Mansi
+jobId: "1035"
+jobName: Dfos.FactoryDP
 jobType: Source Aligned Data Product
-domain: sale
-alias: read6
+developerId: e57fd089-0c45-4273-8d8d-92f488de08b7
+domain: manufacturing
+alias: rite_dfos_factory_data_to_iceberg
 discoveryPort:
-  name: Test_sample_data_state_mngt_Mansi
+  name: Dfos.FactoryDP
 inputPorts:
-  - alias: weather_data_Mansi_1
+  - alias: Dfos_Factory_1
     isDynamic: true
-    path: s3://byte-etl-externaldemo/weather_data/20230626130122.csv
+    tableName: iceberg.factory
+    warehousePath: wasbs://dataversedb@bienodfpocdataverse01.blob.core.windows.net/data/icebergWareHouse/dfos
+    catalogName: iceberg_catalog
     optional:
       persistDataFrame: false
-      advanceOptions:
-        delimiter: ","
-      enableDataReconciliation: false
+      catalogType: postgres
       enforceSchema: false
-      connection: Mansi_S3
-      dataSetUrn: urn:dv:dataset:7ea0f9b9-1b2b-4d8c-a3b6-2a68936e1ad9
-    type: inputDelimited
+      connection: BuildApps Data
+      dataSetUrn: urn:dv:dataset:3e39b374-7830-4d40-8919-661539d8603f
+    type: readDataIceberg
 productState:
-  persistDataFrame: false
-  catalogType: glue
-  enforceSchema: false
-  stepName: read
-  tableName: select lat,lon from glue.s3Source.weather_daily
-  warehousePath: s3://bp-spark-sql-library-test-acc/
-  catalogName: glue
-  type: readDataIceberg
-  isStateManagement: true
-  sequence: 3
-  alias: read
-  refreshInterval: None
+  isDynamic: true
+  alias: rite_dfos_factory_data_to_iceberg
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      Actual:
-        type: STRING
-        description: ""
-      Predicted:
-        type: STRING
-        description: ""
-  enforceSchemaMethod: ""
+  logicalSchema: ""
+  stateStoreType: loadDataIceberg
   isProfilingEnabled: false
+  updateStrategy: SCD1
+  tableName: iceberg.factory_dp
+  warehousePath: wasbs://dataversedb@bienodfpocdataverse01.blob.core.windows.net/data/icebergWareHouse/dfos
+  catalogName: iceberg_catalog
+  optional:
+    persistDataFrame: false
+    enableDataReconciliation: false
+    enforceSchema: true
+    enforceSchemaMethod: Warning
+    catalogType: postgres
+    timestampColumn: lastUpdatedOn
+    primaryKey:
+      - factoryId
+      - messageProducedTimestampAsField
+  refreshInterval: None
 transformation:
   - isDynamic: true
-    alias: EMR_PySpark_1
-    description: Run pyspark code
+    alias: Spark_SQL_1
+    description: read all
     sequence: 2
-    arguments:
-      - s3://byte-etl-externaldemo/weather_data/20230626130122.csv
-    pythonFilePath: s3://bp-spark-sql-library-test-acc/custom-jobs/CustomPythonJobWriteParquetTimeOut.py
     inputDataFrameList:
-      - inputDataFrame: ""
-        tempViewName: ""
+      - inputDataFrame: Dfos_Factory_1
+        tempViewName: df
+    query: select * from df
     optional:
-      pythonEnvTarGZPath: s3://byte-etl-externaldemo/pyspark_serverless_test/pyspark_venv.tar.gz
-    type: customPySparkEMRServerless
+      persistDataFrame: false
+    type: operationThroughSqlQuery
 controlPort:
   dataQualityRules: {}
-outputPort:
-  subscriptionChannels:
-    - channelType: Postgres
-      queryType: SQL
-    - channelType: Dataproduct
-      queryType: SQL

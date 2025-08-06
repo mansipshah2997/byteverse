@@ -3,7 +3,7 @@ jobName: Supply Master
 jobType: Source Aligned Data Product
 developerId: 384fafba-c5d1-4671-ae73-e2b1d2b3c2dc
 domain: sale
-alias: Load_Supply_Master
+alias: Load_Supply_Master2
 discoveryPort:
   name: Supply Master
 inputPorts:

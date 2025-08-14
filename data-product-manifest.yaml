@@ -1,191 +1,37 @@
-jobId: "74"
-jobName: Supply_Master
-jobType: Source Aligned Data Product
-developerId: 384fafba-c5d1-4671-ae73-e2b1d2b3c2dc
-domain: sale
-alias: Load_Supply_Master2
+jobId: "435"
+jobName: onprim_csv_parquet_hr
+jobType: DataSets
+developerId: 80377635-a23a-4837-9ff2-600c9c621477
+domain: hr
+alias: write_parquet
 discoveryPort:
-  name: Supply_Master2
+  name: onprim_csv_parquet_hr
 inputPorts:
-  - alias: GRN_Details_1
+  - alias: Delimited_1
     isDynamic: true
-    path: s3://dataverse-sale/datasets/SupplyMaster.csv
+    path: /data/vishnu/existing.csv
     optional:
       persistDataFrame: false
-      advanceOptions:
-        delimiter: ","
       enableDataReconciliation: false
       enforceSchema: false
-      connection: SAP Supply Chain
-      dataSetUrn: urn:dv:dataset:4bbcfaed-6bd1-4d7c-9cab-619ecfffee07
+      dataSetUrn: ""
     type: inputDelimited
-  - alias: Inventory_in_W/H_1
-    isDynamic: true
-    path: s3://dataverse-sale/datasets/SupplyMaster.csv
-    optional:
-      persistDataFrame: false
-      advanceOptions:
-        delimiter: ","
-      enableDataReconciliation: false
-      enforceSchema: false
-      connection: SAP Supply Chain
-      dataSetUrn: urn:dv:dataset:00d63fcb-d8e6-4ef0-b809-6cff70248b9a
-    type: inputDelimited
-  - alias: Supply_Details_1
-    isDynamic: true
-    path: s3://dataverse-sale/datasets/supply_chain_data.csv
-    optional:
-      persistDataFrame: false
-      advanceOptions:
-        delimiter: ","
-      enableDataReconciliation: false
-      enforceSchema: false
-      connection: SAP Supply Chain
-      dataSetUrn: urn:dv:dataset:07617feb-d134-4e78-bae5-6f850704bc45
-    type: inputDelimited
+    dataProductUrn: ""
 productState:
   isDynamic: true
-  alias: Load_Supply_Master
+  alias: write_parquet
   retentionVersions: ""
-  logicalSchema:
-    properties:
-      TransactionID:
-        type: STRING
-        description: Unique identifier for each transaction
-        sourceColumn: TransactionID
-        sourceTable: Supply_Details_Report
-      Transaction_Date:
-        type: STRING
-        description: Date when the transaction occurred
-        sourceColumn: Transaction_Date
-        sourceTable: Supply_Details_Report
-      Product_ID:
-        type: STRING
-        description: Unique identifier for each product
-        sourceColumn: Product_ID
-        sourceTable: Supply_Details_Report
-      Quantity:
-        type: STRING
-        description: Number of products involved in the transaction
-        sourceColumn: Quantity
-        sourceTable: Supply_Details_Report
-      Supplier_ID:
-        type: STRING
-        description: Unique identifier for each supplier
-        sourceColumn: Supplier_ID
-        sourceTable: Supply_Details_Report
-      Customer_ID:
-        type: STRING
-        description: Unique identifier for each customer
-        sourceColumn: Customer_ID
-        sourceTable: Supply_Details_Report
-      Transaction_Type:
-        type: STRING
-        description: Type of the transaction (e.g., purchase, return)
-        sourceColumn: Transaction_Type
-        sourceTable: Supply_Details_Report
-      Unit_Price:
-        type: STRING
-        description: Price of a single unit of the product
-        sourceColumn: Unit_Price
-        sourceTable: Supply_Details_Report
-      Total_Price:
-        type: STRING
-        description: Total price of the transaction (Unit_Price * Quantity)
-        sourceColumn: Total_Price
-        sourceTable: Supply_Details_Report
-      Location:
-        type: STRING
-        description: Location where the transaction occurred
-        sourceColumn: Location
-        sourceTable: Supply_Details_Report
-      Last_Ordered_Date:
-        type: STRING
-        description: Date when the product was last ordered
-        sourceColumn: Last_Ordered_Date
-        sourceTable: Supply_Details_Report
-      Expected_Next_Order_Date:
-        type: STRING
-        description: Expected date for the next order
-        sourceColumn: Expected_Next_Order_Date
-        sourceTable: Supply_Details_Report
-      Channel:
-        type: STRING
-        description: Channel through which the transaction was made (e.g., online, in-store)
-        sourceColumn: Channel
-        sourceTable: Supply_Details_Report
-      Business_Partner_ID:
-        type: STRING
-        description: Unique identifier for each business partner
-        sourceColumn: Business_Partner_ID
-        sourceTable: Supply_Details_Report
-      Expected_Order_Quantity:
-        type: STRING
-        description: Expected quantity for the next order
-        sourceColumn: Expected_Order_Quantity
-        sourceTable: Supply_Details_Report
-      Expected_Order_Receive_Date:
-        type: STRING
-        description: Expected date to receive the next order
-        sourceColumn: Expected_Order_Receive_Date
-        sourceTable: Supply_Details_Report
-      Stock_On_Hand:
-        type: STRING
-        description: Current stock quantity available
-        sourceColumn: Stock_On_Hand
-        sourceTable: Supply_Details_Report
-      Stock_Aging:
-        type: STRING
-        description: Age of the stock in days
-        sourceColumn: Stock_Aging
-        sourceTable: Supply_Details_Report
-  stateStoreType: loadDataIceberg
-  isProfilingEnabled: true
+  logicalSchema: ""
+  stateStoreType: writeDataFrameToParquet
+  isProfilingEnabled: false
   updateStrategy: Overwrite
-  tableName: s3source.supply_details
-  warehousePath: s3://dataverse-sale/SADP/
-  catalogName: glue
+  path: /data/vishnu/write_csv/
   optional:
     persistDataFrame: false
+    addRunIdColumn: false
     enableDataReconciliation: false
-    enforceSchema: true
-    enforceSchemaMethod: Warning
-    catalogType: glue
-    loggingOptions:
-      printSchema: true
+    enforceSchema: false
   refreshInterval: None
-transformation:
-  - isDynamic: true
-    alias: Spark_SQL_1
-    description: Creating Supply Master
-    sequence: 4
-    inputDataFrameList:
-      - inputDataFrame: GRN_Details_1
-        tempViewName: temp1
-      - inputDataFrame: Inventory_in_W/H_1
-        tempViewName: temp2
-      - inputDataFrame: Supply_Details_1
-        tempViewName: supply
-    query: select * from supply
-    optional:
-      persistDataFrame: false
-    type: operationThroughSqlQuery
+transformation: []
 controlPort:
-  dataQualityRules:
-    NullValueCheck:
-      productState:
-        checks:
-          - column: Transaction_Date
-        referenceAlias: Load_Supply_Master
-    UniquenessCheck:
-      productState:
-        checks:
-          - column: sku_id
-        referenceAlias: Load_Supply_Master
-    UniqueCombinationCheck:
-      productState:
-        checks:
-          - columns:
-              - sku_id
-              - store_id
-        referenceAlias: Load_Supply_Master
+  dataQualityRules: {}

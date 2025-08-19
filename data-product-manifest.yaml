@@ -1,37 +1,50 @@
-jobId: "435"
-jobName: onprim_csv_parquet_hr
-jobType: DataSets
+jobId: "1117"
+jobName: test_lineage_on_prem_mansi
+jobType: Source Aligned Data Product
 developerId: 80377635-a23a-4837-9ff2-600c9c621477
-domain: hr
-alias: write_parquet
+domain: supply_chain
+alias: write_to_postgres
 discoveryPort:
-  name: onprim_csv_parquet_hr
+  name: test_lineage_on_prem_mansi
 inputPorts:
-  - alias: Delimited_1
+  - alias: test_par_onprem_1
     isDynamic: true
-    path: /data/vishnu/existing.csv
+    path: /data/tmp/sample2.parquet
     optional:
       persistDataFrame: false
+      advanceOptions:
+        mergeSchema: true
       enableDataReconciliation: false
       enforceSchema: false
-      dataSetUrn: ""
-    type: inputDelimited
-    dataProductUrn: ""
+      connection: on-prem-Miloni
+      dataSetUrn: urn:dv:dataset:ec6c9edd-bea0-4ea1-9420-153a287fc936
+    type: inputParquet
 productState:
   isDynamic: true
-  alias: write_parquet
+  alias: write_to_postgres
   retentionVersions: ""
   logicalSchema: ""
-  stateStoreType: writeDataFrameToParquet
+  stateStoreType: writeDataFrameToPostgresTable
   isProfilingEnabled: false
   updateStrategy: Overwrite
-  path: /data/vishnu/write_csv/
+  connection: Postgres_Mansi
+  tableName: test_lineage
   optional:
     persistDataFrame: false
-    addRunIdColumn: false
     enableDataReconciliation: false
     enforceSchema: false
   refreshInterval: None
-transformation: []
+transformation:
+  - isDynamic: true
+    alias: Spark_SQL_1
+    description: select all
+    sequence: 2
+    inputDataFrameList:
+      - inputDataFrame: test_par_onprem_1
+        tempViewName: temp
+    query: select * from temp
+    optional:
+      persistDataFrame: false
+    type: operationThroughSqlQuery
 controlPort:
   dataQualityRules: {}

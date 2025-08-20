@@ -1,38 +1,39 @@
-jobId: "1117"
-jobName: test_lineage_on_prem_mansi
+jobId: "987"
+jobName: MYSADP
 jobType: Source Aligned Data Product
-developerId: 80377635-a23a-4837-9ff2-600c9c621477
-domain: supply_chain
-alias: write_to_postgres
+developerId: 87e35b20-2875-427a-8268-5ca88dbb1c84
+domain: business
+alias: write_to_iceberg
 discoveryPort:
-  name: test_lineage_on_prem_mansi
+  name: MYSADP
 inputPorts:
-  - alias: test_par_onprem_1
+  - alias: Postgres_Data_1_1
     isDynamic: true
-    path: /data/tmp/sample2.parquet
+    connection: Postgres Connection
+    tableName/query: data_1
     optional:
       persistDataFrame: false
-      advanceOptions:
-        mergeSchema: true
       enableDataReconciliation: false
       enforceSchema: false
-      connection: on-prem-Miloni
-      dataSetUrn: urn:dv:dataset:ec6c9edd-bea0-4ea1-9420-153a287fc936
-    type: inputParquet
+      dataSetUrn: urn:dv:dataset:2a4d9b83-0e65-472a-9485-abb042427312
+    type: readPostGreSqlDbUsingJdbc
 productState:
   isDynamic: true
-  alias: write_to_postgres
+  alias: write_to_iceberg
   retentionVersions: ""
   logicalSchema: ""
-  stateStoreType: writeDataFrameToPostgresTable
+  stateStoreType: loadDataIceberg
   isProfilingEnabled: false
   updateStrategy: Overwrite
-  connection: Postgres_Mansi
-  tableName: test_lineage
+  tableName: iceberg_meta.user_master
+  warehousePath: /data/tmp/iceberg_warehouse_test
+  catalogName: postgres_catalog
   optional:
     persistDataFrame: false
     enableDataReconciliation: false
     enforceSchema: false
+    enforceSchemaMethod: Warning
+    catalogType: postgres
   refreshInterval: None
 transformation:
   - isDynamic: true
@@ -40,7 +41,7 @@ transformation:
     description: select all
     sequence: 2
     inputDataFrameList:
-      - inputDataFrame: test_par_onprem_1
+      - inputDataFrame: Postgres_Data_1_1
         tempViewName: temp
     query: select * from temp
     optional:

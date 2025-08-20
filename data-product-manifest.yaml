@@ -21,9 +21,25 @@ productState:
   isDynamic: true
   alias: write_to_iceberg
   retentionVersions: ""
-  logicalSchema: ""
+  logicalSchema:
+    properties:
+      Name:
+        type: STRING
+        description: Name of the user
+        sourceColumn: Name
+        sourceTable: public.data_1
+      Age:
+        type: STRING
+        description: Age of the user
+        sourceColumn: Age
+        sourceTable: public.data_1
+      City:
+        type: STRING
+        description: Location of the user
+        sourceColumn: City
+        sourceTable: public.data_1
   stateStoreType: loadDataIceberg
-  isProfilingEnabled: false
+  isProfilingEnabled: true
   updateStrategy: Overwrite
   tableName: iceberg_meta.user_master
   warehousePath: /data/tmp/iceberg_warehouse_test
@@ -31,7 +47,7 @@ productState:
   optional:
     persistDataFrame: false
     enableDataReconciliation: false
-    enforceSchema: false
+    enforceSchema: true
     enforceSchemaMethod: Warning
     catalogType: postgres
   refreshInterval: None
